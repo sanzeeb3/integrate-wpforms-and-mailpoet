@@ -1,4 +1,4 @@
-=== Integrate WPForms and MailPoet ===
+=== WPForms MailPoet ===
 Contributors: sanzeeb3
 Tags: wpforms, mailpoet
 Requires at least: 4.9

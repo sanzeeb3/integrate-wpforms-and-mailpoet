@@ -1,6 +1,6 @@
 <?php
 
-namespace WPFormsMailPoetIntegration;
+namespace WPFormsMailPoet;
 
 defined( 'ABSPATH' ) || exit;
 
