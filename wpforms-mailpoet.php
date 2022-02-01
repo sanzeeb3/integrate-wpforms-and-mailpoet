@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WPForms MailPoet
- * Description: Add subscribers from WPForms to MailPoet.
+ * Description: MailPoet integration with WPForms.
  * Version: 1.0.0
  * Author: Sanjeev Aryal
  * Author URI: https://www.sanjeebaryal.com.np
- * Text Domain: wpforms-mailpoet-integration
+ * Text Domain: wpforms-mailpoet
  */
 
 defined( 'ABSPATH' ) || die();
@@ -30,5 +30,4 @@ function wpforms_mailpoet() {
     return $instance;
 
 }
-
 wpforms_mailpoet();
