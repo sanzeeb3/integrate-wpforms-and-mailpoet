@@ -26,7 +26,7 @@ class WPForms_MailPoet extends WPForms_Provider {
             $this->connect = \MailPoet\API\API::MP('v1');
         }
     }
-    
+
     /**
      * Retrieve MailPoet lists.
      *
@@ -46,8 +46,31 @@ class WPForms_MailPoet extends WPForms_Provider {
      * @return array
      */
     public function api_fields( $connection_id = '', $account_id = 'mailpoet-account-id', $list_id = '' ) {
-        return $this->connect->getSubscriberFields();
+
+        $fields = array(
+                array(
+                    'name'       => 'Email',
+                    'req'        => true,
+                    'tag'        => 'email',
+                    'field_type' => 'email',
+                ),
+                array(
+                    'name'       => 'First Name',
+                    'req'        => false,
+                    'tag'        => 'first_name',
+                    'field_type' => 'text',
+                ),
+                array(
+                    'name'       => 'Last Name',
+                    'req'        => false,
+                    'tag'        => 'last_name',
+                    'field_type' => 'text',
+                ),
+            );
+
+        return $fields;
     }
+
 
     /**
      * Authenticate with the API.
@@ -63,6 +86,7 @@ class WPForms_MailPoet extends WPForms_Provider {
         $providers                       = get_option( 'wpforms_providers', array() );
         $providers[ $this->slug ][ $id ] = array(
             'api'       => trim( $id ),
+            'label'     => sanitize_text_field( $data['label'] ),
             'date'      => time(),
         );
 
@@ -82,12 +106,24 @@ class WPForms_MailPoet extends WPForms_Provider {
      */
     public function api_connect( $account_id ) {
 
-        return 'mailpoet-account-id';
+        error_log( print_r( 'api_connect', true ) );
     }
 
-    /*************************************************************************
-     * Output methods - these methods generally return HTML for the builder. *
-     *************************************************************************/
+    /**
+     * Retrieve provider account list groups.
+     *
+     * @since 1.0.0
+     *
+     * @param string $connection_id
+     * @param string $account_id
+     * @param string $list_id
+     *
+     * @return mixed array or error object.
+     */
+    public function api_groups( $connection_id = '', $account_id = '', $list_id = '' ) {
+
+        return new WP_Error( esc_html__( 'Groups do not exist.', 'wpforms-campaign-monitor' ) );
+    }
 
     /**
      * Provider account authorize fields HTML.
@@ -97,6 +133,59 @@ class WPForms_MailPoet extends WPForms_Provider {
      * @return string
      */
     public function output_auth() {
+
+        $providers = get_option( 'wpforms_providers' );
+        $class     = ! empty( $providers[ $this->slug ] ) ? 'hidden' : '';
+
+        $output = '<div class="wpforms-provider-account-add ' . $class . ' wpforms-connection-block">';
+
+        $output .= '<h4>' . esc_html__( 'Add New Account', 'wpforms-campaign-monitor' ) . '</h4>';
+
+        $output .= sprintf(
+            '<input type="text" data-name="label" placeholder="%s" class="wpforms-required">',
+            sprintf(
+                /* translators: %s - current provider name. */
+                esc_html__( '%s Account Nickname', 'wpforms-campaign-monitor' ),
+                $this->name
+            )
+        );
+
+        $output .= sprintf( '<button data-provider="%s">%s</button>', esc_attr( $this->slug ), esc_html__( 'Connect', 'wpforms-campaign-monitor' ) );
+
+        $output .= '</div>';
+
+        return $output;
+    }
+
+    /**
+     * Provider account list options HTML.
+     *
+     * @since 1.0.0
+     *
+     * @param string $connection_id
+     * @param array $connection
+     *
+     * @return string
+     */
+    public function output_options( $connection_id = '', $connection = array() ) {
+        return '';
+    }
+
+    /**
+     * Form fields to add a new provider account.
+     *
+     * @since 1.0.0
+     */
+    public function integrations_tab_new_form() {
+
+        printf(
+            '<input type="text" name="label" placeholder="%s">',
+            sprintf(
+                /* translators: %s - current provider name. */
+                esc_html__( '%s Account Nickname', 'wpforms-campaign-monitor' ),
+                $this->name
+            )
+        );
     }
 }
 
