@@ -22,24 +22,6 @@ add_action(
 	'wpforms_loaded',
 	function() {
 
-		require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/Plugin.php';
 		require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/class-mailpoet.php';
-
-		/**
-		 * Return the main instance of Plugin Class.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return Plugin.
-		 */
-		function wpforms_mailpoet() {
-			$instance = \WPFormsMailPoet\Plugin::get_instance();
-
-			$instance->init();
-
-			return $instance;
-
-		}
-		wpforms_mailpoet();
 	}
 );

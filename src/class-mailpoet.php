@@ -38,9 +38,63 @@ class WPForms_MailPoet extends WPForms_Provider {
 	 * @param array $fields
 	 * @param array $entry
 	 * @param array $form_data
-	 * @param int $entry_id
+	 * @param int   $entry_id
 	 */
 	public function process_entry( $fields, $entry, $form_data, $entry_id = 0 ) {
+
+		// Only run if this form has a connections for this provider.
+		if ( empty( $form_data['providers'][ $this->slug ] ) ) {
+			return;
+		}
+
+		// Fire for each connection.
+		foreach ( $form_data['providers'][ $this->slug ] as $connection ) {
+			$account_id      = $connection['account_id'];
+			$list_id         = $connection['list_id'];
+			$email_data      = explode( '.', $connection['fields']['email'] );
+			$first_name_data = explode( '.', $connection['fields']['first_name'] );
+			$last_name_data  = explode( '.', $connection['fields']['last_name'] );
+
+			$email      = $fields[ $email_data[0] ]['value'];
+			$first_name = $fields[ $first_name_data[0] ]['first'];
+			$last_name  = $fields[ $last_name_data[0] ]['last'];
+
+			if ( empty( $email ) ) {
+				continue;
+			}
+
+			// Check for conditionals.
+			$pass = $this->process_conditionals( $fields, $entry, $form_data, $connection );
+
+			if ( ! $pass ) {
+				wpforms_log(
+					'Campaign Monitor Subscription stopped by conditional logic',
+					$fields,
+					array(
+						'type'    => array( 'provider', 'conditional_logic' ),
+						'parent'  => $entry_id,
+						'form_id' => $form_data['id'],
+					)
+				);
+
+				continue;
+			}
+
+			/**
+			 * Add a subscriber.
+			 *
+			 * @link https://github.com/mailpoet/mailpoet/blob/master/mailpoet/doc/api_methods/AddSubscriber.md.
+			 */
+			$this->connect->addSubscriber(
+				array(
+					'email'      => $email,
+					'first_name' => $first_name,
+					'last_name'  => $last_name,
+				),
+
+				array( $connection['list_id'] )				
+			);
+		}
 	}
 
 	/**
