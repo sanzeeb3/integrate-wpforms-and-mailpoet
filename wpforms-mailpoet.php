@@ -18,25 +18,28 @@ define( 'WPFORMS_MAILPOET_PLUGIN_PATH', __DIR__ );
  */
 const WPFORMS_MAILPOET_VERSION = '1.0.0';
 
-add_action( 'wpforms_loaded', function() {
+add_action(
+	'wpforms_loaded',
+	function() {
 
-    require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/Plugin.php';
-    require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/class-mailpoet.php';
+		require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/Plugin.php';
+		require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/class-mailpoet.php';
 
-    /**
-     * Return the main instance of Plugin Class.
-     *
-     * @since  1.0.0
-     *
-     * @return Plugin.
-     */
-    function wpforms_mailpoet() {
-        $instance = \WPFormsMailPoet\Plugin::get_instance();
+		/**
+		 * Return the main instance of Plugin Class.
+		 *
+		 * @since  1.0.0
+		 *
+		 * @return Plugin.
+		 */
+		function wpforms_mailpoet() {
+			$instance = \WPFormsMailPoet\Plugin::get_instance();
 
-        $instance->init();
+			$instance->init();
 
-        return $instance;
+			return $instance;
 
-    }
-    wpforms_mailpoet();
-});
+		}
+		wpforms_mailpoet();
+	}
+);

@@ -39,6 +39,6 @@ final class Plugin {
 	 * @since 1.0.0
 	 */
 	public function init() {
-		
+
 	}
 }
