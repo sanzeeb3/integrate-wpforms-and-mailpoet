@@ -102,6 +102,8 @@ class WPForms_MailPoet extends WPForms_Provider {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @link https://github.com/mailpoet/mailpoet/blob/master/mailpoet/doc/api_methods/GetLists.md
+	 *
 	 * @return array
 	 */
 	public function api_lists( $connection_id = '', $account_id = '' ) {
@@ -112,6 +114,8 @@ class WPForms_MailPoet extends WPForms_Provider {
 	 * Retrieve MailPoet fields.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @link https://github.com/mailpoet/mailpoet/blob/master/mailpoet/doc/api_methods/GetSubscriberFields.md
 	 *
 	 * @return array
 	 */

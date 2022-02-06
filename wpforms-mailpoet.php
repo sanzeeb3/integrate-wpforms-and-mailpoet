@@ -22,6 +22,10 @@ add_action(
 	'wpforms_loaded',
 	function() {
 
-		require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/class-mailpoet.php';
+	require_once WPFORMS_MAILPOET_PLUGIN_PATH . '/src/class-mailpoet.php';
+    
+    // Load translated strings.
+    load_plugin_textdomain( 'wpforms-mailpoet', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
 	}
 );
